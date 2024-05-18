@@ -3,15 +3,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_manager/core/di/injection_container.dart' as di;
 
-
 import 'package:sizer/sizer.dart';
 import 'package:task_manager/core/app_cubit/theme_cubit.dart';
 import 'package:task_manager/core/app_cubit/theme_state.dart';
 import 'package:task_manager/core/theme/dark_theme.dart';
 import 'package:task_manager/core/theme/light_theme.dart';
 import 'package:task_manager/core/utils/constants.dart';
+import 'package:task_manager/features/auth/views/pages/login_page.dart';
+import 'package:task_manager/features/home/views/pages/main_page.dart';
 import 'core/di/injection_container.dart';
-import 'features/home/views/pages/main_page.dart';
+import 'package:go_router/go_router.dart';
 
 init() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,24 @@ Future<void> main() async {
       child: const MyApp()));
 }
 
+/// The route configuration.
+final GoRouter _router = GoRouter(
+  routes: <RouteBase>[
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const LoginPage();
+      },
+    ),
+    GoRoute(
+      path: '/todos',
+      builder: (BuildContext context, GoRouterState state) {
+        return const MainPage();
+      },
+    ),
+  ],
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -42,22 +61,21 @@ class MyApp extends StatelessWidget {
       SizerUtil.height = Constants.kDesignSize.height;
       SizerUtil.width = Constants.kDesignSize.width;
 
-      return BlocBuilder<ThemeCubit,ThemeState>(
+      return BlocBuilder<ThemeCubit, ThemeState>(
           bloc: themeCubit,
           builder: (context, state) {
-            return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: Constants.appName,
-            theme: lightTheme(),
-            darkTheme: darkTheme(),
-            themeMode: themeCubit.themeMode,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            home: const MainPage(),
-          );
-        }
-      );
+            return MaterialApp.router(
+              routerConfig: _router,
+              debugShowCheckedModeBanner: false,
+              title: Constants.appName,
+              theme: lightTheme(),
+              darkTheme: darkTheme(),
+              themeMode: themeCubit.themeMode,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+            );
+          });
     });
   }
 }

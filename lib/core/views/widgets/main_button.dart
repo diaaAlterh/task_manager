@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/core/theme/light_theme.dart';
 
+import 'loader_widget.dart';
+
 class MainButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
+  final bool isLoading;
 
-  const MainButton({super.key, required this.title, required this.onPressed});
+  const MainButton({super.key, required this.title, required this.onPressed, this.isLoading=false});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class MainButton extends StatelessWidget {
               foregroundColor: Colors.white
         ),
         onPressed: onPressed,
-        child: Text(
+        child: isLoading?const LoaderWidget(color: Colors.white,):Text(
           title,
         ),
       ),

@@ -56,7 +56,7 @@ class _TodoSheetState extends State<TodoSheet> {
                 }
                 return null;
               },
-              decoration: const InputDecoration(hintText: 'Todo'),
+              decoration: InputDecoration(label: Text('todo'.tr())),
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 16),

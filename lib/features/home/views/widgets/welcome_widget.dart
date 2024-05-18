@@ -6,7 +6,8 @@ import 'package:task_manager/core/views/widgets/switch_theme_widget.dart';
 import '../../../../core/utils/constants.dart';
 
 class WelcomeWidget extends StatelessWidget implements PreferredSizeWidget {
-  const WelcomeWidget({super.key});
+  final String? message;
+  const WelcomeWidget({super.key, this.message});
 
   final String tempName = 'Maids.cc';
 
@@ -33,7 +34,7 @@ class WelcomeWidget extends StatelessWidget implements PreferredSizeWidget {
                       const SizedBox(
                         height: 4,
                       ),
-                      Text('intro_text'.tr(),
+                      Text(message??'intro_text'.tr(),
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall

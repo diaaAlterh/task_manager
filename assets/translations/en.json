@@ -14,5 +14,8 @@
   "todo_deleted": "Todo Deleted Successfully",
   "is_completed": "Is Completed",
   "set_dark_theme": "Set Dark Theme",
-  "set_light_theme": "Set Light Theme"
+  "set_light_theme": "Set Light Theme",
+  "login": "Login",
+  "username": "Username",
+  "password": "Password"
 }

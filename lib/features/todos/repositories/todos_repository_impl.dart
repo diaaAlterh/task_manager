@@ -28,7 +28,7 @@ class TodosRepositoryImpl implements TodosRepository {
 
       return Right(response);
     } catch (error) {
-      return Left(ErrorHandler.handle(error).failure);
+      return Left(ErrorHandler.handle(error));
     }
   }
 
@@ -43,7 +43,7 @@ class TodosRepositoryImpl implements TodosRepository {
 
       return Right(response);
     } catch (error) {
-      return Left(ErrorHandler.handle(error).failure);
+      return Left(ErrorHandler.handle(error));
     }
   }
 
@@ -61,7 +61,7 @@ class TodosRepositoryImpl implements TodosRepository {
 
       return Right(response);
     } catch (error) {
-      return Left(ErrorHandler.handle(error).failure);
+      return Left(ErrorHandler.handle(error));
     }
   }
 
@@ -76,7 +76,7 @@ class TodosRepositoryImpl implements TodosRepository {
 
       return Right(response);
     } catch (error) {
-      return Left(ErrorHandler.handle(error).failure);
+      return Left(ErrorHandler.handle(error));
     }
   }
 }
