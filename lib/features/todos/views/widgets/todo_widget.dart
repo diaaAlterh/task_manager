@@ -6,11 +6,13 @@ class TodoWidget extends StatelessWidget {
   const TodoWidget({
     super.key,
     required this.todo,
+    required this.index,
     this.onPressed,
   });
 
   final VoidCallback? onPressed;
   final TodoModel todo;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class TodoWidget extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
       child: ListTile(
         leading: Text(
-          '${todo.id ?? ''}',
+          '${index + 1}',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
               color: Theme.of(context).colorScheme.secondary, fontSize: 11.sp),
         ),

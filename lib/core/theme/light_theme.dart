@@ -7,7 +7,7 @@ ThemeData _buildLightTheme(ThemeData base) {
   return base.copyWith(
     textTheme: buildTextTheme(),
     dividerTheme: DividerThemeData(
-      color: lightColorScheme.surfaceVariant,
+      color: lightColorScheme.primary,
       thickness: 1.0,
     ),
     scaffoldBackgroundColor: lightColorScheme.surfaceVariant,

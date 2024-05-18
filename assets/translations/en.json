@@ -4,6 +4,15 @@
   "profile": "Profile",
   "welcome": "Welcome",
   "intro_text": "Hope you like the test",
+  "add_new_todo": "Add New Todo",
+  "all_todos": "All Todos",
+  "todo": "Todo",
+  "delete_todo": "Delete Todo",
+  "update_todo": "Update Todo",
+  "todo_added": "Todo Added Successfully",
+  "todo_updated": "Todo Updated Successfully",
+  "todo_deleted": "Todo Deleted Successfully",
+  "is_completed": "Is Completed",
   "set_dark_theme": "Set Dark Theme",
   "set_light_theme": "Set Light Theme"
 }

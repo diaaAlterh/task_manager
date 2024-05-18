@@ -8,7 +8,7 @@ ThemeData _buildDarkTheme(ThemeData base) {
     textTheme: buildTextTheme(),
     scaffoldBackgroundColor: darkColorScheme.surfaceVariant,
     dividerTheme: DividerThemeData(
-      color: darkColorScheme.surfaceVariant,
+      color: darkColorScheme.secondary,
       thickness: 1.0,
     ),
     cardTheme: CardTheme(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),

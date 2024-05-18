@@ -13,43 +13,48 @@ class WelcomeWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(left: 4.w, top: 1.4.h, right: 4.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${'welcome'.tr()} $tempName ${Constants.hiEmoji}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(
-                              color: Theme.of(context).colorScheme.secondary)),
-                  const SizedBox(
-                    height: 4,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 4.w, top: 1.4.h, right: 4.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${'welcome'.tr()} $tempName ${Constants.hiEmoji}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                  color: Theme.of(context).colorScheme.secondary)),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text('intro_text'.tr(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer)),
+                    ],
                   ),
-                  Text('intro_text'.tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer)),
-                ],
-              ),
+                ),
+                const SwitchThemeWidget()
+              ],
             ),
-            const SwitchThemeWidget()
-          ],
-        ),
+          ),
+          const Divider(),
+        ],
       ),
     );
   }
 
   @override
-  Size get preferredSize => const Size(double.infinity, 60);
+  Size get preferredSize => const Size(double.infinity, 84);
 }
