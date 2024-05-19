@@ -25,10 +25,7 @@ class TodosRepositoryImpl implements AuthRepository {
   }) async {
     try {
       final response = await _authServices.login(user: user);
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      sharedPreferences.setString(
-          Constants.userKey, json.encode(response.toJson()));
+      _saveUser(response);
       return Right(response);
     } on DioException catch (error) {
       return Left(ErrorHandler.handleDioError(error));
@@ -41,10 +38,15 @@ class TodosRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserModel>> refresh() async {
     try {
       final response = await _authServices.refresh();
-
+      _saveUser(response);
       return Right(response);
     } catch (error) {
       return Left(ErrorHandler.handle(error));
     }
+  }
+
+  _saveUser(UserModel user) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(Constants.userKey, json.encode(user.toJson()));
   }
 }

@@ -1,0 +1,23 @@
+{
+  "msg_not_internet": "لا يوجد اتصال بالإنترنت",
+  "home": "الرئيسية",
+  "profile": "الملف الشخصي",
+  "welcome": "مرحبا",
+  "intro_text": "نأمل أن يعجبك الاختبار",
+  "add_new_todo": "إضافة مهمة جديدة",
+  "all_todos": "جميع المهام",
+  "todo": "مهمة",
+  "delete_todo": "حذف المهمة",
+  "update_todo": "تحديث المهمة",
+  "todo_added": "تمت إضافة المهمة بنجاح",
+  "todo_updated": "تم تحديث المهمة بنجاح",
+  "todo_deleted": "تم حذف المهمة بنجاح",
+  "is_completed": "مكتمل",
+  "set_dark_theme": "تفعيل الوضع الداكن",
+  "set_light_theme": "تفعيل الوضع الفاتح",
+  "login": "تسجيل الدخول",
+  "username": "اسم المستخدم",
+  "password": "كلمة المرور",
+  "change_language": "تغيير اللغة",
+  "logout": "تسجيل الخروج"
+}

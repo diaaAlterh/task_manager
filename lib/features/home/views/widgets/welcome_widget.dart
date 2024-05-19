@@ -17,7 +17,7 @@ class WelcomeWidget extends StatelessWidget implements PreferredSizeWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 4.w, top: 1.4.h, right: 4.w),
+            padding: EdgeInsets.only(left: 4.w, top: 1.3.h, right: 4.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -57,5 +57,5 @@ class WelcomeWidget extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size(double.infinity, 84);
+  Size get preferredSize => const Size(double.infinity, 87);
 }

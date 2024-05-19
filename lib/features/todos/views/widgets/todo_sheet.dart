@@ -23,7 +23,6 @@ class _TodoSheetState extends State<TodoSheet> {
   bool isCompleted = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController controllerTodo = TextEditingController();
-  ThemeCubit themeCubit = getIt<ThemeCubit>();
 
   @override
   void initState() {
@@ -34,8 +33,6 @@ class _TodoSheetState extends State<TodoSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final textColor =
-        themeCubit.themeMode == ThemeMode.light ? Colors.black : Colors.white;
     return Container(
       height: (widget.todo == null ? 250 : 300) +
           MediaQuery.of(context).viewInsets.bottom,
@@ -45,7 +42,9 @@ class _TodoSheetState extends State<TodoSheet> {
         child: ListView(
           children: [
             TextFormField(
-              style: TextStyle(color: textColor),
+              style: TextStyle(color: Theme.of(context)
+                  .colorScheme
+                  .primaryContainer),
               controller: controllerTodo,
               maxLines: 3,
               minLines: 1,
@@ -56,7 +55,9 @@ class _TodoSheetState extends State<TodoSheet> {
                 return null;
               },
               decoration: InputDecoration(
-                  label: Text('todo'.tr(), style: TextStyle(color: textColor))),
+                  label: Text('todo'.tr(), style: TextStyle(color: Theme.of(context)
+                      .colorScheme
+                      .primaryContainer))),
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 16),

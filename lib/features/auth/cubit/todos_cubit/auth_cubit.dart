@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,10 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> refreshToken({
-    required String userName,
-    required String password,
-  }) async {
+  Future<void> refreshToken() async {
     emit(const AuthState.loading());
 
     final result = await _authRepository.refresh();
@@ -45,9 +44,12 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<bool> isAuthenticated() async {
+  Future<UserModel?> getUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final user = sharedPreferences.getString(Constants.userKey);
-    return user != null;
+    if (user != null) {
+      return UserModel.fromJson(jsonDecode(user ?? ''));
+    }
+    return null;
   }
 }

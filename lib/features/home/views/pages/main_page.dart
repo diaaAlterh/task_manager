@@ -38,7 +38,7 @@ class _MainPageState extends State<MainPage> {
           bloc: _bottomNavCubit,
           builder: (context, state) {
             return MainScaffold(
-              appbar: WelcomeWidget(),
+              appbar: const WelcomeWidget(),
               body: _bottomNavCubit.pages[_bottomNavCubit.selectedPageIndex],
               bottomNavigationBar: BottomNavigationBar(
                 backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant,

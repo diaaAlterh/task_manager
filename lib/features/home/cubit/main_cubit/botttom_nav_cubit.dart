@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:task_manager/features/auth/views/pages/profile_page.dart';
 import 'package:task_manager/features/todos/views/pages/todos_page.dart';
 import 'bottom_nav_state.dart';
 
@@ -14,7 +15,7 @@ class BottomNavCubit extends Cubit<BottomNavState> {
 
   List<Widget> pages = const [
     TodosPage(),
-    SizedBox(),
+    ProfilePage(),
   ];
 
   List<BottomNavigationBarItem> navItems = [
@@ -23,7 +24,11 @@ class BottomNavCubit extends Cubit<BottomNavState> {
       label: 'home'.tr(),
       tooltip: 'home'.tr(),
     ),
-    BottomNavigationBarItem(icon: const Icon(Icons.category_outlined), label: 'explore'.tr(), tooltip: 'explore'.tr()),
+    BottomNavigationBarItem(
+      icon: const Icon(Icons.person),
+      label: 'profile'.tr(),
+      tooltip: 'profile'.tr(),
+    ),
   ];
 
   updatePageIndex(int index) {

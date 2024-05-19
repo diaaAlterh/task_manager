@@ -17,5 +17,7 @@
   "set_light_theme": "Set Light Theme",
   "login": "Login",
   "username": "Username",
-  "password": "Password"
+  "password": "Password",
+  "change_language": "Change Language",
+  "logout": "Logout"
 }
