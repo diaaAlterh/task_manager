@@ -34,6 +34,8 @@ class _TodoSheetState extends State<TodoSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final textColor =
+        themeCubit.themeMode == ThemeMode.light ? Colors.black : Colors.white;
     return Container(
       height: (widget.todo == null ? 250 : 300) +
           MediaQuery.of(context).viewInsets.bottom,
@@ -43,10 +45,7 @@ class _TodoSheetState extends State<TodoSheet> {
         child: ListView(
           children: [
             TextFormField(
-              style: TextStyle(
-                  color: themeCubit.themeMode == ThemeMode.light
-                      ? Colors.black
-                      : Colors.white),
+              style: TextStyle(color: textColor),
               controller: controllerTodo,
               maxLines: 3,
               minLines: 1,
@@ -56,7 +55,8 @@ class _TodoSheetState extends State<TodoSheet> {
                 }
                 return null;
               },
-              decoration: InputDecoration(label: Text('todo'.tr())),
+              decoration: InputDecoration(
+                  label: Text('todo'.tr(), style: TextStyle(color: textColor))),
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -96,7 +96,10 @@ class _TodoSheetState extends State<TodoSheet> {
                 child: SizedBox(
                   width: 150,
                   child: TextButton(
-                    onPressed: widget.onDelete,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      widget.onDelete!();
+                    },
                     style: TextButton.styleFrom(
                         foregroundColor: Theme.of(context).colorScheme.error),
                     child: Text('delete_todo'.tr()),

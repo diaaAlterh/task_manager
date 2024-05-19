@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/core/di/injection_container.dart' as di;
 
 import 'package:sizer/sizer.dart';
@@ -13,6 +14,8 @@ import 'package:task_manager/features/auth/views/pages/login_page.dart';
 import 'package:task_manager/features/home/views/pages/main_page.dart';
 import 'core/di/injection_container.dart';
 import 'package:go_router/go_router.dart';
+
+import 'features/auth/cubit/todos_cubit/auth_cubit.dart';
 
 init() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,21 +36,26 @@ Future<void> main() async {
 
 /// The route configuration.
 final GoRouter _router = GoRouter(
-  routes: <RouteBase>[
-    GoRoute(
-      path: '/',
-      builder: (BuildContext context, GoRouterState state) {
-        return const LoginPage();
-      },
-    ),
-    GoRoute(
-      path: '/todos',
-      builder: (BuildContext context, GoRouterState state) {
-        return const MainPage();
-      },
-    ),
-  ],
-);
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/',
+        builder: (BuildContext context, GoRouterState state) {
+          return const LoginPage();
+        },
+      ),
+      GoRoute(
+        path: '/todos',
+        builder: (BuildContext context, GoRouterState state) {
+          return const MainPage();
+        },
+      ),
+    ],
+    redirect: (context, state) async {
+      if (await getIt<AuthCubit>().isAuthenticated()) {
+        return '/todos';
+      }
+      return null;
+    });
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

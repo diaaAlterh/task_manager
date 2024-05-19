@@ -22,12 +22,12 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<ThemeCubit, ThemeState>(
       bloc: themeCubit,
       builder: (context, state) {
-        final textColor =
-        themeCubit.themeMode == ThemeMode.light ? Colors.black : Colors.white;
+        final textColor = themeCubit.themeMode == ThemeMode.light
+            ? Colors.black
+            : Colors.white;
         return TextFormField(
           style: TextStyle(color: textColor),
           controller: widget.controller,
@@ -41,16 +41,19 @@ class _PasswordFieldState extends State<PasswordField> {
             return null;
           },
           decoration: InputDecoration(
-              label: Text('password'.tr()),
+              label: Text(
+                'password'.tr(),
+                style: TextStyle(color: textColor),
+              ),
               suffixIcon: IconButton(
                 onPressed: () {
                   setState(() {
                     obscureText = !obscureText;
                   });
                 },
-                icon: Icon(
-                    obscureText ? CupertinoIcons.eye : CupertinoIcons
-                        .eye_slash),
+                icon: Icon(obscureText
+                    ? CupertinoIcons.eye
+                    : CupertinoIcons.eye_slash,color: textColor,),
               )),
         );
       },

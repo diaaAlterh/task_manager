@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+import 'package:task_manager/core/utils/constants.dart';
 import 'package:task_manager/core/utils/general.dart';
 import 'package:task_manager/features/todos/cubit/todos_cubit/todos_state.dart';
 import 'package:task_manager/features/todos/models/todo_model.dart';
+import 'package:task_manager/features/todos/models/todos_list_model.dart';
 import 'package:task_manager/features/todos/repositories/todos_repository.dart';
 
 @lazySingleton
@@ -23,7 +25,18 @@ class TodosCubit extends Cubit<TodosState> {
 
   clear() {
     _index = 0;
+    _addedTodos.clear();
+    _updatedTodos.clear();
+    _deletedTodos.clear();
     todosController?.dispose();
+  }
+
+  refresh() {
+    _index = 0;
+    _addedTodos.clear();
+    _updatedTodos.clear();
+    _deletedTodos.clear();
+    todosController?.refresh();
   }
 
   void initController() {
@@ -39,7 +52,23 @@ class TodosCubit extends Cubit<TodosState> {
     int limit = 10,
   }) async {
     if (_index == 0) {
-      emit(const TodosState.loading());
+      List<TodoModel> localTodos =
+          await _todosRepository.getLocalTodos(key: Constants.todosKey);
+      if (localTodos.isEmpty) {
+        emit(const TodosState.loading());
+      } else {
+        todosController?.appendLastPage(localTodos);
+        emit(TodosState.loaded(TodosListModel(todos: localTodos)));
+        _addedTodos.addAll(
+            await _todosRepository.getLocalTodos(key: Constants.addedTodosKey));
+        _updatedTodos.addAll(await _todosRepository.getLocalTodos(
+            key: Constants.updatedTodosKey));
+        _deletedTodos.addAll(await _todosRepository.getLocalTodos(
+            key: Constants.deletedTodosKey));
+        _addAddedTodos();
+        _updateUpdatedTodos();
+        _deleteDeletedTodos();
+      }
     }
 
     final result =
@@ -50,8 +79,9 @@ class TodosCubit extends Cubit<TodosState> {
         emit(TodosState.error(l));
       }
       todosController?.error = l;
-    }, (result) {
+    }, (result) async {
       if (_index == 0) {
+        todosController?.itemList = [];
         emit(TodosState.loaded(result));
         _addAddedTodos();
       }
@@ -80,41 +110,80 @@ class TodosCubit extends Cubit<TodosState> {
       var currentItems = List<TodoModel>.from(todosController?.itemList ?? []);
       currentItems = [result, ...currentItems];
       todosController?.itemList = currentItems;
+      _todosRepository.saveTodosToLocal(
+          todos: _addedTodos, key: Constants.addedTodosKey);
     });
   }
 
   Future<void> updateTodo({
     required TodoModel todo,
   }) async {
-    final result = await _todosRepository.updateTodo(todo: todo);
-
-    result.fold((l) {}, (result) {
-      _updatedTodos.add(result);
+    if (_addedTodos.contains(todo)) {
+      if (_updatedTodos.contains(todo)) {
+        _updatedTodos[_updatedTodos
+            .indexWhere((element) => element.id == todo.id)] = todo;
+      } else {
+        _updatedTodos.add(todo);
+      }
       showToast(message: 'todo_updated'.tr());
       final currentItems =
           List<TodoModel>.from(todosController?.itemList ?? []);
-      int index = currentItems.indexWhere((element) => element.id == result.id);
+      int index = currentItems.indexWhere((element) => element.id == todo.id);
       if (index != -1) {
-        currentItems[index] = result;
+        currentItems[index] = todo;
       }
       todosController?.itemList = currentItems;
-    });
+      _todosRepository.saveTodosToLocal(
+          todos: _updatedTodos, key: Constants.updatedTodosKey);
+    } else {
+      final result = await _todosRepository.updateTodo(todo: todo);
+
+      result.fold((l) {}, (result) {
+        _updatedTodos.add(result);
+        showToast(message: 'todo_updated'.tr());
+        final currentItems =
+            List<TodoModel>.from(todosController?.itemList ?? []);
+        int index =
+            currentItems.indexWhere((element) => element.id == result.id);
+        if (index != -1) {
+          currentItems[index] = result;
+        }
+        todosController?.itemList = currentItems;
+        _todosRepository.saveTodosToLocal(
+            todos: _updatedTodos, key: Constants.updatedTodosKey);
+      });
+    }
   }
 
   Future<void> deleteTodo({
-    required int id,
+    required TodoModel todo,
   }) async {
-    final result = await _todosRepository.deleteTodo(id: id);
-
-    result.fold((l) {}, (result) {
-      _deletedTodos.add(result);
+    if (_addedTodos.contains(todo)) {
+      _addedTodos.remove(todo);
       showToast(message: 'todo_deleted'.tr());
 
       final currentItems =
           List<TodoModel>.from(todosController?.itemList ?? []);
-      currentItems.remove(result);
+      currentItems.remove(todo);
       todosController?.itemList = currentItems;
-    });
+      _todosRepository.saveTodosToLocal(
+          todos: _addedTodos, key: Constants.addedTodosKey);
+    } else {
+      final result =
+          await _todosRepository.deleteTodo(id: todo.id?.toInt() ?? 0);
+
+      result.fold((l) {}, (result) {
+        _deletedTodos.add(result);
+        showToast(message: 'todo_deleted'.tr());
+
+        final currentItems =
+            List<TodoModel>.from(todosController?.itemList ?? []);
+        currentItems.remove(result);
+        todosController?.itemList = currentItems;
+        _todosRepository.saveTodosToLocal(
+            todos: _deletedTodos, key: Constants.deletedTodosKey);
+      });
+    }
   }
 
   _deleteDeletedTodos() {

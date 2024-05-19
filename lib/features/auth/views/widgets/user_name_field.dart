@@ -32,7 +32,11 @@ class UserNameField extends StatelessWidget {
             }
             return null;
           },
-          decoration: InputDecoration(label: Text('username'.tr())),
+          decoration: InputDecoration(
+              label: Text(
+            'username'.tr(),
+            style: TextStyle(color: textColor,),
+          )),
         );
       },
     );

@@ -21,4 +21,9 @@ abstract class TodosRepository {
   Future<Either<Failure, TodoModel>> deleteTodo({
     required int id,
   });
+
+  Future<void> saveTodosToLocal(
+      {required List<TodoModel> todos, required String key});
+
+  Future<List<TodoModel>> getLocalTodos({required String key});
 }

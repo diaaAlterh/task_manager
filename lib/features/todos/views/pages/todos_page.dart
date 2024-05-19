@@ -32,7 +32,7 @@ class _TodosPageState extends State<TodosPage> {
 
   void _refreshData() {
     try {
-      _todosCubit.todosController?.refresh();
+      _todosCubit.refresh();
     } catch (e) {
       debugPrint('onRefresh: error-> $e');
     }
@@ -84,12 +84,17 @@ class _TodosPageState extends State<TodosPage> {
         showDragHandle: true,
         builder: (context) => TodoSheet(
               todo: todo,
-              onDelete: (){},
+              onDelete: () {
+                if (todo != null) {
+                  _todosCubit.deleteTodo(todo: todo);
+                }
+              },
               onSave: (todo) {
-                if(todo.id!=null){
+                if (todo.id != null) {
                   _todosCubit.updateTodo(todo: todo);
-                }else{
-                _todosCubit.addTodo(todo: todo);}
+                } else {
+                  _todosCubit.addTodo(todo: todo);
+                }
               },
             ),
         isScrollControlled: true);
