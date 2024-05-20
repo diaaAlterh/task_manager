@@ -41,6 +41,8 @@ class TodosCubit extends Cubit<TodosState> {
   }
 
   void initController() {
+    todosController =
+        PagingController(firstPageKey: 0, invisibleItemsThreshold: 1);
     todosController.addPageRequestListener((index) {
       _index = index;
       getTodosList();
