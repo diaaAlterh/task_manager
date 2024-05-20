@@ -52,7 +52,7 @@ class _TodosPageState extends State<TodosPage> {
               return Future.delayed(const Duration(seconds: 1));
             },
             child: PagedListView<int, TodoModel>(
-              pagingController: _todosCubit.todosController!,
+              pagingController: _todosCubit.todosController,
               builderDelegate: PagedChildBuilderDelegate<TodoModel>(
                 animateTransitions: false,
                 firstPageProgressIndicatorBuilder: (_) =>
@@ -60,7 +60,7 @@ class _TodosPageState extends State<TodosPage> {
                 newPageProgressIndicatorBuilder: (_) => const LoaderWidget(),
                 firstPageErrorIndicatorBuilder: (_) => Center(
                     child: Text(
-                        _todosCubit.todosController?.error.toString() ?? '')),
+                        _todosCubit.todosController.error.toString())),
                 itemBuilder: (context, item, index) {
                   return TodoWidget(
                     onPressed: () {

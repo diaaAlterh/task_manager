@@ -15,7 +15,8 @@ class TodosCubit extends Cubit<TodosState> {
 
   TodosCubit(this._todosRepository) : super(const TodosState.initial());
 
-  PagingController<int, TodoModel>? todosController;
+  PagingController<int, TodoModel> todosController =
+      PagingController(firstPageKey: 0, invisibleItemsThreshold: 1);
 
   final List<TodoModel> _addedTodos = [];
   final List<TodoModel> _deletedTodos = [];
@@ -28,7 +29,7 @@ class TodosCubit extends Cubit<TodosState> {
     _addedTodos.clear();
     _updatedTodos.clear();
     _deletedTodos.clear();
-    todosController?.dispose();
+    todosController.dispose();
   }
 
   refresh() {
@@ -36,13 +37,11 @@ class TodosCubit extends Cubit<TodosState> {
     _addedTodos.clear();
     _updatedTodos.clear();
     _deletedTodos.clear();
-    todosController?.refresh();
+    todosController.refresh();
   }
 
   void initController() {
-    todosController =
-        PagingController(firstPageKey: 0, invisibleItemsThreshold: 1);
-    todosController?.addPageRequestListener((index) {
+    todosController.addPageRequestListener((index) {
       _index = index;
       getTodosList();
     });
@@ -57,7 +56,7 @@ class TodosCubit extends Cubit<TodosState> {
       if (localTodos.isEmpty) {
         emit(const TodosState.loading());
       } else {
-        todosController?.appendLastPage(localTodos);
+        todosController.appendLastPage(localTodos);
         emit(TodosState.loaded(TodosListModel(todos: localTodos)));
         _addedTodos.addAll(
             await _todosRepository.getLocalTodos(key: Constants.addedTodosKey));
@@ -78,10 +77,10 @@ class TodosCubit extends Cubit<TodosState> {
       if (_index == 0) {
         emit(TodosState.error(l));
       }
-      todosController?.error = l;
+      todosController.error = l;
     }, (result) async {
       if (_index == 0) {
-        todosController?.itemList = [];
+        todosController.itemList = [];
         emit(TodosState.loaded(result));
         _addAddedTodos();
       }
@@ -90,9 +89,9 @@ class TodosCubit extends Cubit<TodosState> {
 
       _index = _index + 1;
       if (isLastPage) {
-        todosController?.appendLastPage((result.todos ?? []));
+        todosController.appendLastPage((result.todos ?? []));
       } else {
-        todosController?.appendPage(result.todos ?? [], _index);
+        todosController.appendPage(result.todos ?? [], _index);
       }
       _deleteDeletedTodos();
       _updateUpdatedTodos();
@@ -107,9 +106,9 @@ class TodosCubit extends Cubit<TodosState> {
     result.fold((l) {}, (result) {
       _addedTodos.add(result);
       showToast(message: 'todo_added'.tr());
-      var currentItems = List<TodoModel>.from(todosController?.itemList ?? []);
+      var currentItems = List<TodoModel>.from(todosController.itemList ?? []);
       currentItems = [result, ...currentItems];
-      todosController?.itemList = currentItems;
+      todosController.itemList = currentItems;
       _todosRepository.saveTodosToLocal(
           todos: _addedTodos, key: Constants.addedTodosKey);
     });
@@ -126,13 +125,12 @@ class TodosCubit extends Cubit<TodosState> {
         _updatedTodos.add(todo);
       }
       showToast(message: 'todo_updated'.tr());
-      final currentItems =
-          List<TodoModel>.from(todosController?.itemList ?? []);
+      final currentItems = List<TodoModel>.from(todosController.itemList ?? []);
       int index = currentItems.indexWhere((element) => element.id == todo.id);
       if (index != -1) {
         currentItems[index] = todo;
       }
-      todosController?.itemList = currentItems;
+      todosController.itemList = currentItems;
       _todosRepository.saveTodosToLocal(
           todos: _updatedTodos, key: Constants.updatedTodosKey);
     } else {
@@ -142,13 +140,13 @@ class TodosCubit extends Cubit<TodosState> {
         _updatedTodos.add(result);
         showToast(message: 'todo_updated'.tr());
         final currentItems =
-            List<TodoModel>.from(todosController?.itemList ?? []);
+            List<TodoModel>.from(todosController.itemList ?? []);
         int index =
             currentItems.indexWhere((element) => element.id == result.id);
         if (index != -1) {
           currentItems[index] = result;
         }
-        todosController?.itemList = currentItems;
+        todosController.itemList = currentItems;
         _todosRepository.saveTodosToLocal(
             todos: _updatedTodos, key: Constants.updatedTodosKey);
       });
@@ -162,10 +160,9 @@ class TodosCubit extends Cubit<TodosState> {
       _addedTodos.remove(todo);
       showToast(message: 'todo_deleted'.tr());
 
-      final currentItems =
-          List<TodoModel>.from(todosController?.itemList ?? []);
+      final currentItems = List<TodoModel>.from(todosController.itemList ?? []);
       currentItems.remove(todo);
-      todosController?.itemList = currentItems;
+      todosController.itemList = currentItems;
       _todosRepository.saveTodosToLocal(
           todos: _addedTodos, key: Constants.addedTodosKey);
     } else {
@@ -177,9 +174,9 @@ class TodosCubit extends Cubit<TodosState> {
         showToast(message: 'todo_deleted'.tr());
 
         final currentItems =
-            List<TodoModel>.from(todosController?.itemList ?? []);
+            List<TodoModel>.from(todosController.itemList ?? []);
         currentItems.remove(result);
-        todosController?.itemList = currentItems;
+        todosController.itemList = currentItems;
         _todosRepository.saveTodosToLocal(
             todos: _deletedTodos, key: Constants.deletedTodosKey);
       });
@@ -187,15 +184,15 @@ class TodosCubit extends Cubit<TodosState> {
   }
 
   _deleteDeletedTodos() {
-    final currentItems = List<TodoModel>.from(todosController?.itemList ?? []);
+    final currentItems = List<TodoModel>.from(todosController.itemList ?? []);
     for (var element in _deletedTodos) {
       currentItems.remove(element);
     }
-    todosController?.itemList = currentItems;
+    todosController.itemList = currentItems;
   }
 
   _updateUpdatedTodos() {
-    final currentItems = List<TodoModel>.from(todosController?.itemList ?? []);
+    final currentItems = List<TodoModel>.from(todosController.itemList ?? []);
     for (var element in _updatedTodos) {
       int index =
           currentItems.indexWhere((element2) => element2.id == element.id);
@@ -203,12 +200,12 @@ class TodosCubit extends Cubit<TodosState> {
         currentItems[index] = element;
       }
     }
-    todosController?.itemList = currentItems;
+    todosController.itemList = currentItems;
   }
 
   _addAddedTodos() {
-    var currentItems = List<TodoModel>.from(todosController?.itemList ?? []);
+    var currentItems = List<TodoModel>.from(todosController.itemList ?? []);
     currentItems = [..._addedTodos, ...currentItems];
-    todosController?.itemList = currentItems;
+    todosController.itemList = currentItems;
   }
 }

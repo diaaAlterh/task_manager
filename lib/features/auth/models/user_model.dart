@@ -1,4 +1,6 @@
-class UserModel {
+import 'package:equatable/equatable.dart';
+
+class UserModel extends Equatable {
   UserModel({
     this.id,
     this.username,
@@ -45,4 +47,7 @@ class UserModel {
     if (token != null) map['token'] = token;
     return map;
   }
+
+  @override
+  List<Object?> get props => [id];
 }
