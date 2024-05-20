@@ -1,16 +1,13 @@
 # task_manager
 
-maids.cc Flutter Developer Test
+Maids.cc Flutter Developer Test Done By Diaa Altereh
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. To run the Project type *flutter run* in terminal
+2. To run the test type *flutter test* in terminal
+3. To Login use this credential: *username: atuny0* *password: 9uQFF1Lh* OR [get a new user from here](https://dummyjson.com/users)
+4. Hope you like it
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[get APK release from here](https://drive.google.com/drive/folders/1AqnV6LSaEKrdnkcm4znVh0yJmwTX-RgU)
+[My CV is Here](https://drive.google.com/file/d/1Aq9NLuiMyZRr_Acbz7STtxCcob0Cea_-/view?usp=drivesdk)
